@@ -1,0 +1,16 @@
+.container{
+	width:574px;
+	border:1px solid #ccc;
+	margin:0 auto;
+	overflow: hidden;
+}
+.block{
+	width:40px;
+	height:40px;
+	border:1px solid #999;
+	margin-left:-1px;
+	margin-top:-1px;
+	float:left;
+	box-shadow: 1px 1px 3px #ccc;
+
+}
