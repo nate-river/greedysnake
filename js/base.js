@@ -1,6 +1,5 @@
 $(function(){
-
-	function chushihua(){
+	(function chushihua(){
 		var divs ='';
 		for( var i=0; i<14; i++){
 			for(var j=0; j<14; j++){
@@ -10,8 +9,7 @@ $(function(){
 		$('.container').append(divs);
 		she = ['#0_0','#0_1','#0_2'];
 		xianShiShe();
-	}
-	chushihua();
+	})();
 
 	//右移动
 	function youyidong(){
