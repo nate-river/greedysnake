@@ -1,143 +1,110 @@
 $(function(){
-	(function chushihua(){
-		var divs ='';
-		for( var i=0; i<14; i++){
-			for(var j=0; j<14; j++){
-				divs += '<div id="'+i+'_'+j+'" class="block"></div>';
-			}
-		}
-		$('.container').append(divs);
-		she = ['#0_0','#0_1','#0_2'];
-		xianShiShe();
-	})();
-
-	//右移动
-	function youyidong(){
-		for(var i=0; i<she.length;i++){
-			var n = parseInt(she[i].split('_')[1]) + 1;
-			if (n >=14){
-				alert('撞了');
-				clearInterval(t);
-				return;
-			}
-			she[i] = she[i].split('_')[0] +'_'+ String(n);
-		}
-		xianShiShe();
+    document.onkeydown = function(e){
+	if(e.keyCode == 37 || e.keyCode == 38 || e.keyCode == 39 || e.keyCode == 40){
+	    if( Math.abs( e.keyCode - snake.derection) != 2 ){
+		snake.derection = e.keyCode;
+	    }
 	}
-
-	//左移动
-	function zuoyidong(){
-		for(var i=0;i<she.length;i++){
-			var n = parseInt(she[i].split('_')[1]) - 1;
-			if(n<0){
-				alert('撞了');
-				clearInterval(t);
-				return;
-			}
-			she[i] = she[i].split('_')[0] +'_'+ String(n);
+    }
+    function Snake(row){
+	this.row = row||20;
+	this.data = [{x:0,y:0},{x:0,y:1},{x:0,y:2}];
+	this.derection = 40; //上下左右  38 40 37 39 
+	this.drawSence();
+	this.drawSelf();
+    }
+    //画场景
+    Snake.prototype.drawSence = function(){
+	$('.container').css({width:this.row * 20 + 'px', height:this.row * 20 + 'px'});
+	for( var i=0; i<this.row; i++){
+	    for(var j=0; j<this.row; j++){
+		if( Math.random() > 0.991 ){
+		    $('<div/>').attr('id','_'+ i +'_'+ j).addClass('block food').appendTo($('.container'));
+		}else{
+		    $('<div/>').attr('id','_'+ i +'_'+ j).addClass('block').appendTo($('.container'));
 		}
-		xianShiShe();
+	    }
 	}
-	//下移动
-	function xiayidong(){
-		for(var i=0;i<she.length;i++){
-			var n = parseInt( she[i].split('_')[0].slice(1) ) + 1;
-
-			if(n>=14){
-				clearInterval(t);
-				alert('撞了');
-				return;
-			}
-			she[i] = '#' + n + '_' + she[i].split('_')[1];
+    }
+    //画自己
+    Snake.prototype.drawSelf = function(){
+	$(".block").css('background','white');
+	for ( var i = 0;  i < this.data.length;  i++){
+	    $('#_'+ this.data[i].x+'_'+ this.data[i].y).css('background','red');
+	}
+    }
+    Snake.prototype.move = function(){
+	if( this.derection == 38 ){
+	    var newHeadX = this.data[this.data.length-1].x - 1;
+	    var newHeadY = this.data[this.data.length-1].y
+	}
+	if( this.derection == 40 ){
+	    var newHeadX = this.data[this.data.length-1].x + 1;
+	    var newHeadY = this.data[this.data.length-1].y
+	}
+	if( this.derection == 37 ){
+	    var newHeadX = this.data[this.data.length-1].x
+	    var newHeadY = this.data[this.data.length-1].y - 1;
+	}
+	if( this.derection == 39 ){
+	    var newHeadX = this.data[this.data.length-1].x
+	    var newHeadY = this.data[this.data.length-1].y + 1;
+	}
+	//判断撞墙
+	if( (newHeadX > this.row-1) || (newHeadY > this.row-1) || (newHeadX < 0) || (newHeadY < 0) ){
+	    return false;
+	}
+	//判断撞自己
+	for ( var i = 0;  i < this.data.length;  i++){
+	    if(  (newHeadX == this.data[i].x) && (newHeadY == this.data[i].y) ){
+		return false;
+	    }
+	}
+	//判断吃东西
+	var selector = '#_'+newHeadX+'_'+newHeadY;
+	if( $(selector).hasClass('food') ){
+	    $(selector).removeClass('food');
+	    //吃一个放一个
+	    this.dropfood();
+	}else{
+	    this.data.shift();
+	}
+	this.data.push({x:newHeadX,y:newHeadY});
+	this.drawSelf();
+	return true;
+    }
+    Snake.prototype.dropfood = function(){
+	var that = this;
+	var _f = true;
+	while(_f){
+	    var x = Math.round( Math.random()*(this.row-1) );
+	    var y = Math.round( Math.random()*(this.row-1) );
+	    _f = function(){
+		//不要把食物放到蛇身上
+		for ( var i = 0;  i < that.data.length;  i++){
+		    if(  ( x == that.data[i].x) && ( y == that.data[i].y) )
+			return true;
 		}
-		xianShiShe();
+		return false;
+	    }();
 	}
-	//上移动
-	function shangyidong(){
-		for(var i=0;i<she.length;i++){
-			var n = parseInt( she[i].split('_')[0].slice(1) ) - 1;
-
-			if(n<0){
-				clearInterval(t);
-				alert('撞了');
-				return;
-			}
-			she[i] = '#' + n + '_' + she[i].split('_')[1];
-		}
-		xianShiShe();
+	//不要把食物放到食物身上.....fuck...
+	var selector = '#_'+x+'_'+y;
+	while( $(selector).hasClass('food') ){
+	    var x = Math.round( Math.random()*(this.row-1) );
+	    var y = Math.round( Math.random()*(this.row-1) );
+	    selector = '#_'+x+'_'+y;
 	}
-
-
-
-	//让蛇出现
-	function xianShiShe(){
-		$('.she').css('background-color','white');
-		$('.she').removeClass('she');
-		for(var i=0; i<she.length;i++){
-			$(she[i]).addClass('she');
-			$(she[i]).css('background-color','#cb5953');
-		}
-	}
-
-	var t;
-	var fangxiang;
-	$(document).keydown(function(e){
-		switch(e.which){
-			case 37:
-				if(fangxiang == 'you'){
-					return;
-				}
-
-				clearInterval(t);
-				t = setInterval(zuoyidong,300);
-				fangxiang = 'zuo';
-				break;
-			case 38:
-				if(fangxiang == 'xia'){
-					return;
-				}
-				clearInterval(t);
-				t = setInterval(shangyidong,300);
-				fangxiang = 'shang';
-				break;
-			case 39:
-				if(fangxiang == 'zuo'){
-					return;
-				}
-				clearInterval(t);
-				t = setInterval(youyidong,300);
-				fangxiang = 'you';
-				break;
-			case 40:
-				if(fangxiang == 'shang'){
-					return;
-				}
-
-
-				clearInterval(t);
-				t = setInterval(xiayidong,300);
-				fangxiang = 'xia';
-				break;
-		}
-	})
-
-	function you_to_xia(){
-		//从右向下的情况
-		//00  01 02
-		//01  02 12
-		//02  12 13
-		//12  13 14
-		//从左向下的情况
-		//00 01 02
-		//10 00 01
-		//11 10 00
-		//12 11 10
-		//从上向左
-		//45 35 25
-		//44 45 35
-		she  = she.slice(1)
-		she = she.push('')
-
-		xianshishe();
-	}
+	$(selector).addClass('food');
+    }
+    Snake.prototype.start = function(){
+	var that = this;
+	this.intervalId = setInterval(function(){
+	    if( !that.move() ){
+		clearInterval(that.intervalId);
+	    };
+	},200);
+    }
+    var snake = new Snake();
+    snake.start();
 })

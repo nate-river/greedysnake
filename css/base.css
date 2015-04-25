@@ -1,3 +1,13 @@
-*{padding:0;margin:0;}
-.container{width:574px; border:1px solid #ccc; margin:0 auto; overflow: hidden;}
-.block{width:40px; height:40px; border:1px solid #999; margin-left:-1px; margin-top:-1px; float:left; box-shadow: 1px 1px 3px #ccc;}
+.container{
+    width:574px;
+    margin:0 auto;
+}
+.block{
+    width:20px;
+    height:20px;
+    float:left;
+    box-shadow: 0px 0px 1px black
+}
+.food{
+    box-shadow:0px 0px 8px red inset;
+}
