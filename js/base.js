@@ -2,7 +2,7 @@ $(function(){
     document.onkeydown = function(e){
 	if(e.keyCode == 37 || e.keyCode == 38 || e.keyCode == 39 || e.keyCode == 40){
 	    if( Math.abs( e.keyCode - snake.derection) != 2 ){
-		snake.derection = e.keyCode;
+			snake.derection = e.keyCode;
 	    }
 	}
     }
