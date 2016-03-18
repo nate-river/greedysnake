@@ -8,11 +8,18 @@ body{
   line-height: 0;
   font-size:0;
 }
+
 #snake{
+  position: absolute;
+  margin:auto auto;
+  top:0;
+  bottom:0;
+  left:0;
+  right:0;
+
   border: 4px double #eee;
   width: 600px;
   height: 600px;
-  margin: 0 auto;
 }
 #snake .block{
   width: 30px;
@@ -30,7 +37,6 @@ body{
     float: left;
   }
 }
-
 
 #snake .snake{
   background: #2c961a;
