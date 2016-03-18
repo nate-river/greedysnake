@@ -115,7 +115,7 @@
         direct = num2dir[e.keyCode];
       })
 
-      touch.on(this , 'touchstart',function(e){
+      touch.on( this , 'tap',function(e){
         e.preventDefault();
       });
 
