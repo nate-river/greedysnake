@@ -115,6 +115,10 @@
         direct = num2dir[e.keyCode];
       })
 
+      touch.on(this , 'touchstart',function(e){
+        e.preventDefault();
+      });
+
       touch.on( this ,'swipe', function(e){
         e.preventDefault();
         if( Math.abs( dir2num[e.direction] - dir2num[direct] ) === 2 ){
