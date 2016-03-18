@@ -94,6 +94,7 @@
       var timer = setInterval(move,100);
 
       touch.on( '#snake' ,'swipe', function(e){
+        e.preventDefault();
         if(e.direction){
           direct =  e.direction;
         }
