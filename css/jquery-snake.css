@@ -1,0 +1,41 @@
+body{
+  margin:0;
+}
+#snake::after{
+  content: ' ';
+  clear: both;
+  display: block;
+  line-height: 0;
+  font-size:0;
+}
+#snake{
+  border: 4px double #eee;
+  width: 600px;
+  height: 600px;
+  margin: 0 auto;
+}
+#snake .block{
+  width: 30px;
+  height: 30px;
+  float: left;
+}
+@media (max-width:640px) {
+  #snake{
+    width: 320px;
+    height: 320px;
+  }
+  #snake .block{
+    width: 16px;
+    height: 16px;
+    float: left;
+  }
+}
+
+
+#snake .snake{
+  background: #2c961a;
+}
+
+#snake .food{
+  background: #eb7719;
+}
